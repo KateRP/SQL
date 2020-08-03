@@ -1,0 +1,20 @@
+/*For restaurants, I will use the Yelp data to look to see how the ratings correlate to different attributes. Might there be attributes a restaurant owner should consider in order to possibly help get higher ratings?
+
+The type of data for this analysis includes narrowing it down to businesses that are restaurants, and grouping the attributes. To make it more simple I will also assign a star rating range of 4-5, 2-3, and below. Additionally, I can look at number of review to qualify star ratings -- the more ratings there are, the higher the likelyhood that the ratings are solid -- so, I will sort descending on stars-range, and review-count.
+	
+What I learned: It looks like the most 4-5 star ratings went to restaurants that like to party! ("best nights", "coat check", "Good for Dancing", "Happy Hour"). Although, it could also be possible that these are the attributes that are most important to people who are more likely to post Yelp reviews?*/
+
+select category.category, attribute.name as attribute, count(business.name) as count_businesses, review_count,  
+	case
+	when stars between 4 and 5 then '4-5'
+	when stars between 2 and 3.5 then '2-3'
+	when stars < 2 then '0-1'
+	end Stars_Range
+	from business
+
+	left join attribute on attribute.business_id = business.id
+	left join category on category.business_id = business.id
+	where category.category like 'restaurants'
+
+	group by attribute.name
+	order by stars_range desc, review_count desc
