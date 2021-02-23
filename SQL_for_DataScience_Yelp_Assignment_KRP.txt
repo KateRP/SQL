@@ -1,0 +1,413 @@
+Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
+
+In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. You will be required to prepare the dataset for the analysis you choose to do. As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
+
+For both parts of this assignment, use this "worksheet." It provides all the questions you are being asked, and your job will be to transfer your answers and SQL coding where indicated into this worksheet so that your peers can review your work. You should be able to use any Text Editor (Windows Notepad, Apple TextEdit, Notepad ++, Sublime Text, etc.) to copy and paste your answers. If you are going to use Word or some other page layout application, just be careful to make sure your answers and code are lined appropriately.
+In this case, you may want to save as a PDF to ensure your formatting remains intact for you reviewer.
+
+
+
+Part 1: Yelp Dataset Profiling and Understanding
+
+1. Profile the data by finding the total number of records for each of the tables below:
+	
+i. Attribute table = 10,000
+ii. Business table = 10,000
+iii. Category table = 10,000
+iv. Checkin table = 10,000
+v. elite_years table = 10,000
+vi. friend table = 10,000
+vii. hours table = 10,000
+viii. photo table = 10,000
+ix. review table = 10,000
+x. tip table = 10,000
+xi. user table = 10,000
+	
+
+
+2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
+
+i. Business = 10,000 
+ii. Hours = 1,562 
+iii. Category = 2,643
+iv. Attribute = 1,115
+v. Review = 10,000
+vi. Checkin = 493
+vii. Photo = 10,000
+viii. Tip = 537 user_id
+ix. User = 10,000
+x. Friend = 11
+xi. Elite_years = 2,780
+
+Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.	
+
+
+
+3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+
+	Answer: No
+	
+	
+	SQL code used to arrive at answer:
+	
+select *
+from user
+where id is null or
+  name is null or
+  review_count is null or
+  yelping_since is null or
+  useful is null or
+  funny is null or
+  cool is null or 
+  fans is null  or
+  average_stars is null or
+  compliment_hot is null or
+  compliment_more is null or
+  compliment_profile is null or 
+  compliment_cute is null or
+  compliment_list is null or
+  compliment_note is null or 
+  compliment_plain is null or
+  compliment_cool is null  or
+  compliment_funny is null or
+  compliment_writer is null or
+  compliment_photos is null  
+;
+	
+	
+4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+
+	i. Table: Review, Column: Stars
+	
+		min:1		max:5	avg:3.7082
+		
+	
+	ii. Table: Business, Column: Stars
+	
+		min:1		max:5		avg:3.6549
+		
+	
+	iii. Table: Tip, Column: Likes
+	
+		min:0		max:2		avg:0.0144
+		
+	
+	iv. Table: Checkin, Column: Count
+	
+		min:1		max:53		avg:1.9414
+		
+	
+	v. Table: User, Column: Review_count
+	
+		min:0		max:2000		avg:24.2995 
+		
+
+
+5. List the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer:
+	
+	select city, count(city) as reviews_per_city
+	from business
+	group by city
+	order by reviews_per_city desc
+	
+	Copy and Paste the Result Below:
+	
+city            | reviews_per_city |
++-----------------+------------------+
+| Las Vegas       |             1561 |
+| Phoenix         |             1001 |
+| Toronto         |              985 |
+| Scottsdale      |              497 |
+| Charlotte       |              468 |
+| Pittsburgh      |              353 |
+| Montréal        |              337 |
+| Mesa            |              304 |
+| Henderson       |              274 |
+| Tempe           |              261 |
+| Edinburgh       |              239 |
+| Chandler        |              232 |
+| Cleveland       |              189 |
+| Gilbert         |              188 |
+| Glendale        |              188 |
+| Madison         |              176 |
+| Mississauga     |              150 |
+| Stuttgart       |              141 |
+| Peoria          |              105 |
+| Markham         |               80 |
+| Champaign       |               71 |
+| North Las Vegas |               70 |
+| North York      |               64 |
+| Surprise        |               60 |
+| Richmond Hill   |               54 |
++-----------------+------------------+
+(Output limit exceeded, 25 of 362 total rows shown)
+
+	
+6. Find the distribution of star ratings to the business in the following cities:
+
+i. Avon
+SQL code used to arrive at answer:
+
+	select city, stars, count(*) as count_stars
+	from business 
+	where city like 'avon' 
+	group by stars;
+	
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+
+city | stars | count_stars |
++------+-------+-------------+
+| Avon |   1.5 |           1 |
+| Avon |   2.5 |           2 |
+| Avon |   3.5 |           3 |
+| Avon |   4.0 |           2 |
+| Avon |   4.5 |           1 |
+| Avon |   5.0 |           1 |
+
+
+ii. Beachwood
+
+	SQL code used to arrive at answer:
+	select city, stars, count(*) as count_stars
+	from business 
+	where city like 'beachwood' 
+	group by stars
+
+Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+
+city      | stars | count_stars |
++-----------+-------+-------------+
+| Beachwood |   2.0 |           1 |
+| Beachwood |   2.5 |           1 |
+| Beachwood |   3.0 |           2 |
+| Beachwood |   3.5 |           2 |
+| Beachwood |   4.0 |           1 |
+| Beachwood |   4.5 |           2 |
+| Beachwood |   5.0 |           5 
+
+7. Find the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:
+
+	select id, name, review_count
+	from user
+	group by id 
+	order by review_count desc limit 3;
+		
+	Copy and Paste the Result Below:
+	id                     | name   | review_count |
++------------------------+--------+--------------+
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald |         2000 |
+| -3s52C4zL_DHRK0ULG6qtg | Sara   |         1629 |
+| -8lbUNlXVSoXqaRRiHiSNg | Yuri   |         1339 
+		
+
+
+8. Does posing more reviews correlate with more fans?
+	NO
+
+	Please explain your findings and interpretation of the results:
+	
+	Based on the number of reviews and the number of fans by ID in the user table, there is not a correlation. For example, there were four ids who had reviews in the 800s. For these ids, the number of fans ranged from 43 to 159, and not in order by number of reviews.
+
+	
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer:
+
+	There are 1780 reviews with "love" and 232 with "hate".  So more "love"s.
+	
+	SQL code used to arrive at answer:
+		
+	select count(distinct text) as love_count
+	from review
+	where text like '%love%';
+	
+	Next query...
+	
+	select count(distinct text) as hate_count
+	from review
+	where text like '%hate%';
+
+	
+	
+10. Find the top 10 users with the most fans:
+
+	SQL code used to arrive at answer:
+	
+	select id, name, fans
+	from user
+	group by id
+	order by fans desc
+	limit 10
+	
+	Copy and Paste the Result Below:
+
+	id                     | name      | fans |
++------------------------+-----------+------+
+| -9I98YbNQnLdAmcYfb324Q | Amy       |  503 |
+| -8EnCioUmDygAbsYZmTeRQ | Mimi      |  497 |
+| --2vR0DIsmQ6WfcSzKWigw | Harald    |  311 |
+| -G7Zkl1wIWBBmD0KRy_sCw | Gerald    |  253 |
+| -0IiMAZI2SsQ7VmyzJjokQ | Christine |  173 |
+| -g3XIcCb2b-BD0QBCcq2Sw | Lisa      |  159 |
+| -9bbDysuiWeo2VShFJJtcw | Cat       |  133 |
+| -FZBTkAZEXoP7CYvRV2ZwQ | William   |  126 |
+| -9da1xk7zgnnfO1uTVYGkA | Fran      |  124 |
+| -lh59ko3dxChBSZ9U7LfUw | Lissa     |  120 |
+		
+
+Part 2: Inferences and Analysis
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+	
+i. Do the two groups you chose to analyze have a different distribution of hours?
+	
+	The group of 4-5 ratings for restaurants in Charlotte (one restaurant in this group) all opened in time for lunch, while all the 2-3 star restaurants (one restaurant in this group) were already open in time for breakfast.
+
+	select hours.hours, trim(hours.hours, '|0123456789:-') as day, city, category.category, stars,
+	case 
+	when stars like '4.0' or stars like '5.0' or stars like '4.5' then '4-5'
+	when stars like '2.0' or stars like '2.5' or stars like '3.0' or stars like '3.5' then '2-3' 
+	else 'low'
+	end stars_range
+
+	from business
+	left join category on category.business_id = business.id
+	left join hours on hours.business_id = business.id
+	where category like 'restaurants' and city like 'charlotte'
+
+	order by stars_range desc;
+
+
+ii. Do the two groups you chose to analyze have a different number of reviews?
+     
+	Yes, there were 4 reviews for the 4-5 group and 7 reviews for the 2-3 range.
+
+	select id, name, review_count, city, category.category, stars,
+	case 
+	when stars like '4.0' or stars like '5.0' or stars like '4.5' then '4-5'
+	when stars like '2.0' or stars like '2.5' or stars like '3.0' or stars like '3.5' then '2-3' 
+	else 'low'
+	end stars_range
+
+	from business
+	left join category on category.business_id = business.id
+	
+	where category like 'restaurants' and city like 'charlotte'
+
+	order by stars_range desc;
+ 
+         
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+
+	Neighborhoods were null for these, but they were located in different postal codes. 
+	
+SQL code used for analysis:
+	
+	select id, name, address, postal_code, city, category.category, stars,
+	case 
+	when stars like '4.0' or stars like '5.0' or stars like '4.5' then '4-5'
+	when stars like '2.0' or stars like '2.5' or stars like '3.0' or stars like '3.5' then '2-3' 
+	else 'low'
+	end stars_range
+
+	from business
+	left join category on category.business_id = business.id
+	
+	where category like 'restaurants' and city like 'charlotte'
+
+	order by stars_range desc;
+		
+		
+2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1:
+         The one that is open has attributes listed, where the one that is closed has no attributes (null) listed
+         
+ii. Difference 2:
+         The one that is open is open is open for breakfast, lunch, and dinner
+         The one that is closed is not open for breakfast.
+         
+SQL code used for analysis:
+	
+	select id, business.name, is_open, attribute.name, hours.hours, city, category.category, stars, 
+	case 
+	when stars like '4.0' or stars like '5.0' or stars like '4.5' then '4-5'
+	when stars like '2.0' or stars like '2.5' or stars like '3.0' or stars like '3.5' then '2-3' 
+	else 'low'
+	end stars_range
+	from business
+
+	left join hours on hours.business_id = business.id
+	left join attribute on attribute.business_id = business.id
+	left join category on category.business_id = business.id
+	where category like 'restaurants' and city like 'charlotte'
+
+	order by is_open  desc;
+	
+	
+3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+    
+	For restaurants, I will look to see how the ratings correlate to different attributes. Might there be attributes a restaurant owner should consider in order to possibly help get higher ratings?
+         
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data
+
+	The type of data for this analysis includes narrowing it down to businesses that are restaurants, and grouping the attributes. To make it more simple I will also assign a star rating range of 4-5, 2-3, and below. Additionally, I can look at number of review to qualify star ratings -- the more ratings there are, the higher the likelyhood that the ratings are solid -- so, I will sort descending on stars-range, and review-count.
+	
+	What I learned: It looks like the most 4-5 star ratings went to restaurants that like to party! ("best nights", "coat check", "Good for Dancing", "Happy Hour"). Although, it could also be possible that these are the attributes that are most important to people who are more likely to post Yelp reviews?
+	
+iv. Provide the SQL code you used to create your final dataset:
+
+	select category.category, attribute.name as attribute, count(business.name) as count_businesses, review_count,  
+	case
+	when stars between 4 and 5 then '4-5'
+	when stars between 2 and 3.5 then '2-3'
+	when stars < 2 then '0-1'
+	end Stars_Range
+	from business
+
+	left join attribute on attribute.business_id = business.id
+	left join category on category.business_id = business.id
+	where category.category like 'restaurants'
+
+	group by attribute.name
+	order by stars_range desc, review_count desc
+
+ category    | attribute                | review_count |
++-------------+--------------------------+--------------+
+| Restaurants | RestaurantsTableService  |           25 |
+| Restaurants | GoodForMeal              |           25 |
+| Restaurants | Alcohol                  |           25 |
+| Restaurants | Caters                   |           25 |
+| Restaurants | HasTV                    |           25 |
+| Restaurants | RestaurantsGoodForGroups |           25 |
+| Restaurants | NoiseLevel               |           25 |
+| Restaurants | WiFi                     |           25 |
+| Restaurants | RestaurantsAttire        |           25 |
+| Restaurants | RestaurantsReservations  |           25 |
+| Restaurants | OutdoorSeating           |           25 |
+| Restaurants | RestaurantsPriceRange2   |           25 |
+| Restaurants | BikeParking              |           25 |
+| Restaurants | RestaurantsDelivery      |           25 |
+| Restaurants | Ambience                 |           25 |
+| Restaurants | RestaurantsTakeOut       |           25 |
+| Restaurants | GoodForKids              |           25 |
+| Restaurants | BusinessParking          |           25 |
+| Restaurants | GoodForMeal              |            4 |
+| Restaurants | Alcohol                  |            4 |
+| Restaurants | HasTV                    |            4 |
+| Restaurants | RestaurantsGoodForGroups |            4 |
+| Restaurants | NoiseLevel               |            4 |
+| Restaurants | RestaurantsAttire        |            4 |
+| Restaurants | RestaurantsReservations  |            4 |
++-------------+--------------------------+--------------+
+(Output limit exceeded, 25 of 587 total rows shown)
